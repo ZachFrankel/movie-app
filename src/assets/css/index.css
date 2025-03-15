@@ -1,30 +1,42 @@
 @import "tailwindcss";
 
-html, body {
-    background-color: var(--color-denim-100);
+html,
+body {
+  @apply bg-denim-100 font-open-sans text-denim-700 overflow-x-hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+#root {
+  padding: 0.05px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
 }
 
 @theme {
-    --color-bink-100: #432449;
-    --color-bink-200: #412B57;
-    --color-bink-300: #533670;
-    --color-bink-400: #714C97;
-    --color-bink-500: #8D66B5;
-    --color-bink-600: #A87FD1;
-    --color-bink-700: #CD97D6;
-    
-    --color-denim-100: #120F1D;
-    --color-denim-200: #191526;
-    --color-denim-300: #211D30;
-    --color-denim-400: #2B263D;
-    --color-denim-500: #38334A;
-    --color-denim-600: #504B64;
-    --color-denim-700: #7A758F;
-    
-    --color-ash-100: #1E1C26;
-    --color-ash-200: #2B2836;
-    --color-ash-300: #2C293A;
-    --color-ash-400: #3D394D;
-    --color-ash-500: #9C93B5;
-    --color-ash-600: #817998;
+  --color-bink-100: #432449;
+  --color-bink-200: #412b57;
+  --color-bink-300: #533670;
+  --color-bink-400: #714c97;
+  --color-bink-500: #8d66b5;
+  --color-bink-600: #a87fd1;
+  --color-bink-700: #cd97d6;
+
+  --color-denim-100: #120f1d;
+  --color-denim-200: #191526;
+  --color-denim-300: #211d30;
+  --color-denim-400: #2b263d;
+  --color-denim-500: #38334a;
+  --color-denim-600: #504b64;
+  --color-denim-700: #7a758f;
+
+  --color-ash-100: #1e1c26;
+  --color-ash-200: #2b2836;
+  --color-ash-300: #2c293a;
+  --color-ash-400: #3d394d;
+  --color-ash-500: #9c93b5;
+  --color-ash-600: #817998;
+
+  --font-open-sans: "Open Sans";
 }
