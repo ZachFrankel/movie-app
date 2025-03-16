@@ -98,7 +98,7 @@ export function GetResults({ query }: Result) {
 
   return (
     <div className="mt-16">
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {results.map((result: SearchResult) => (
           <MediaCard
             key={result.id}
