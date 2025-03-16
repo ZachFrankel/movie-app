@@ -1,5 +1,5 @@
 import { useState } from "react";
-import getResults from "./SearchResults";
+import { GetResults } from "./SearchResults";
 
 interface SearchProps {
   title: string;
@@ -51,7 +51,7 @@ function Search({ title, placeholder }: SearchProps) {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {getResults({ query })}
+        {GetResults({ query })}
       </div>
     </>
   );
