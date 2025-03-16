@@ -26,7 +26,7 @@ interface Result {
   query: string;
 }
 
-function getResults({ query }: Result) {
+export function GetResults({ query }: Result) {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -69,8 +69,8 @@ function getResults({ query }: Result) {
       : getYear(item.first_air_date);
   };
 
-  const getTitle = (result: any) => {
-    return result.title || result.name;
+  const getTitle = (result: SearchResult) => {
+    return result.media_type === "movie" ? result.title : result.name;
   };
 
   if (loading) {
@@ -99,5 +99,3 @@ function getResults({ query }: Result) {
     <p>Results</p>
   )
 }
-
-export default getResults;
