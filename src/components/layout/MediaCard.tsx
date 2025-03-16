@@ -6,7 +6,8 @@ export interface MediaCardProps {
   year: string | number;
 }
 
-export function MediaCard({ id, posterPath, title, mediaType, year }: MediaCardProps) {
+// define id later to link to player
+export function MediaCard({ posterPath, title, mediaType, year }: MediaCardProps) {
   const imageUrl = `https://image.tmdb.org/t/p/w342${posterPath}`;
   
   return (
