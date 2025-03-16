@@ -3,6 +3,24 @@ import { useDebounce } from "../hooks/useDebounce";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
+interface MovieResult {
+  id: number;
+  title: string;
+  poster_path: string | null;
+  release_date: string;
+  media_type: "movie";
+}
+
+interface TVResult {
+  id: number;
+  name: string;
+  poster_path: string | null;
+  first_air_date: string;
+  media_type: "tv";
+}
+
+type SearchResult = MovieResult | TVResult;
+
 interface Result {
   query: string;
 }
@@ -40,11 +58,35 @@ function getResults({ query }: Result) {
     search();
   }, [q]);
 
-  const getYear = (item: Result) => {
-    return item.release_date ? new Date(item.release_date).getFullYear() : "";
-    
+  const getYear = (date: string) => {
+    return date ? new Date(date).getFullYear() : "";
   };
+
+  const getRelease = (item: SearchResult) => {
+    return item.media_type === "movie"
+      ? getYear(item.release_date)
+      : getYear(item.first_air_date);
+  };
+
   const getTitle = (result: any) => {
     return result.title || result.name;
   };
+
+  if (loading) {
+    return (
+      <p>Loading...</p>
+    )
+  }
+
+  if (results.length === 0 && q) {
+    return (
+      <p>No results found</p>
+    )
+  }
+
+  return (
+    <p>Results</p>
+  )
 }
+
+export default getResults;
