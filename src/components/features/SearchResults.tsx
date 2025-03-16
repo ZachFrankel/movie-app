@@ -92,6 +92,10 @@ function getResults({ query }: Result) {
     );
   }
 
+  if (!q) {
+    return null;
+  }
+
   return (
     <p>Results</p>
   )
