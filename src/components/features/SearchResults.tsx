@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDebounce } from "../hooks/useDebounce";
+import { Loading } from "../layout/Loading";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
@@ -73,9 +74,7 @@ function getResults({ query }: Result) {
   };
 
   if (loading) {
-    return (
-      <p>Loading...</p>
-    )
+    return <Loading text="Loading..." className="mt-16" />;
   }
 
   if (results.length === 0 && q) {
