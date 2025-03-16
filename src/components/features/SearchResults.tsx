@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDebounce } from "../hooks/useDebounce";
 import { Loading } from "../layout/Loading";
+import { MediaCard } from "../layout/MediaCard";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 
@@ -96,6 +97,19 @@ export function GetResults({ query }: Result) {
   }
 
   return (
-    <p>Results</p>
-  )
+    <div className="mt-16">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {results.map((result: SearchResult) => (
+          <MediaCard
+            key={result.id}
+            id={result.id}
+            posterPath={result.poster_path || ""}
+            title={getTitle(result)}
+            mediaType={result.media_type}
+            year={getRelease(result)}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
