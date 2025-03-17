@@ -3,9 +3,9 @@ import Search from "../components/features/Search";
 function Home() {
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-0">
-        <div className="absolute bottom-0 left-0 right-0 flex h-0 justify-center">
-          <div className="absolute -bottom-90 h-[100vh] w-[3000px] rounded-[100%] bg-denim-300 md:w-[200vw]"></div>
+      <div className="absolute top-0 left-0 right-0 z-0">
+        <div className="relative w-full h-[50vh]">
+          <div className="absolute bottom-23 h-[100vh] w-[3000px] left-1/2 transform -translate-x-1/2 rounded-[100%] bg-denim-300 md:w-[200vw]"></div>
         </div>
       </div>
 
