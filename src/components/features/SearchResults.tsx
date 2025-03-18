@@ -51,7 +51,7 @@ export function GetResults({ query }: Result) {
 
         const data = await res.json();
 
-        setResults(data.results.filter((item: SearchResult) => item.poster_path !== null));
+        setResults(data.results.filter((item: SearchResult) => item.poster_path !== null && item.poster_path !== undefined && item.poster_path !== ""));
       } finally {
         setLoading(false);
       }
