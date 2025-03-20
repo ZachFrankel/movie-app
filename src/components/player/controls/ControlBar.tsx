@@ -4,16 +4,18 @@ import { ProgressBar } from './ProgressBar';
 import { FullscreenButton } from './Fullscreen';
 import { SeekButtons } from './Seek';
 import { SettingsButton } from './Settings';
-import { PlayerState, PlayerControls } from '../types';
+import { EpisodesButton } from './Episodes';
+import { PlayerState, PlayerControls, EpisodeInfo } from '../types';
 import { useState } from 'react';
 
 interface ControlBarProps {
   playerState: PlayerState;
   controls: PlayerControls;
   showControls: boolean;
+  episodeInfo?: EpisodeInfo;
 }
 
-export function ControlBar({ playerState, controls, showControls }: ControlBarProps) {
+export function ControlBar({ playerState, controls, showControls, episodeInfo }: ControlBarProps) {
   const [isTimeHovering, setIsTimeHovering] = useState(false);
   
   const formatTime = (seconds: number) => {
@@ -31,6 +33,8 @@ export function ControlBar({ playerState, controls, showControls }: ControlBarPr
   };
 
   const handleSettingsClick = () => {};
+  
+  const handleEpisodesClick = () => {};
 
   return (
     <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 transition-opacity duration-300 ${
@@ -77,10 +81,14 @@ export function ControlBar({ playerState, controls, showControls }: ControlBarPr
         </div>
         
         <div className="flex items-center space-x-4">
+          {episodeInfo && (
+            <EpisodesButton
+              onClick={handleEpisodesClick}
+            />
+          )}
           <SettingsButton
             onClick={handleSettingsClick}
           />
-          
           <FullscreenButton 
             isFullscreen={playerState.isFullscreen} 
             onToggle={controls.toggleFullscreen} 

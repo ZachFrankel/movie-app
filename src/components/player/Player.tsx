@@ -147,6 +147,7 @@ export function VideoPlayer({
         playerState={playerState}
         controls={controls}
         showControls={showControls}
+        episodeInfo={episodeInfo}
       />
     </div>
   );
