@@ -11,6 +11,7 @@ export interface PlayerState {
   isMuted: boolean;
   isFullscreen: boolean;
   isLoading: boolean;
+  isBuffering: boolean;
   error: string | null;
 }
 

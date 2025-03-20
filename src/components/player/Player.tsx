@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { ControlBar } from './controls/ControlBar';
 import { Loading } from '../layout/Loading';
+import { Spinner } from '../layout/Spinner';
 import { PlayerProps } from './types';
 import { usePlayer } from './hooks/usePlayer';
 
@@ -77,6 +78,12 @@ export function VideoPlayer({ sources, autoPlay = true, title }: PlayerProps) {
       {playerState.isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/50">
           <Loading />
+        </div>
+      )}
+
+      {playerState.isBuffering && !playerState.isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+          <Spinner className="text-white" />
         </div>
       )}
 

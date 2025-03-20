@@ -14,6 +14,7 @@ export function usePlayer(sources: VideoSource[]) {
     isMuted: false,
     isFullscreen: false,
     isLoading: true,
+    isBuffering: false,
     error: null
   });
 
@@ -48,6 +49,9 @@ export function usePlayer(sources: VideoSource[]) {
       isLoading: false
     }));
 
+    const handleWaiting = () => setPlayerState(prev => ({ ...prev, isBuffering: true }));
+    const handlePlaying = () => setPlayerState(prev => ({ ...prev, isBuffering: false }));
+
     videoElement.addEventListener('timeupdate', updateProgress);
     videoElement.addEventListener('play', handlePlay);
     videoElement.addEventListener('pause', handlePause);
@@ -55,6 +59,8 @@ export function usePlayer(sources: VideoSource[]) {
     videoElement.addEventListener('loadstart', handleLoadStart);
     videoElement.addEventListener('canplay', handleCanPlay);
     videoElement.addEventListener('error', handleError);
+    videoElement.addEventListener('waiting', handleWaiting);
+    videoElement.addEventListener('playing', handlePlaying);
 
     return () => {
       videoElement.removeEventListener('timeupdate', updateProgress);
@@ -64,6 +70,8 @@ export function usePlayer(sources: VideoSource[]) {
       videoElement.removeEventListener('loadstart', handleLoadStart);
       videoElement.removeEventListener('canplay', handleCanPlay);
       videoElement.removeEventListener('error', handleError);
+      videoElement.removeEventListener('waiting', handleWaiting);
+      videoElement.removeEventListener('playing', handlePlaying);
     };
   }, []);
 
