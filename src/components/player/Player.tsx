@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { ControlBar } from './controls/ControlBar';
 import { Loading } from '../layout/Loading';
 import { Spinner } from '../layout/Spinner';
@@ -23,7 +24,7 @@ export function VideoPlayer({ sources, autoPlay = true, title }: PlayerProps) {
       setShowControls(true);
       timerRef.current = setTimeout(() => {
         setShowControls(false);
-      }, 3250); // 4 seconds
+      }, 3250); // ~3 seconds
     } else {
       // Always show controls when video is paused
       setShowControls(true);
@@ -90,9 +91,28 @@ export function VideoPlayer({ sources, autoPlay = true, title }: PlayerProps) {
       <div className={`absolute top-0 left-0 right-0 bg-gradient-to-b from-black/70 to-transparent p-4 transition-opacity duration-300 ${
         showControls ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}>
-        <h1 className="text-2xl font-bold text-white">{title}</h1>
+        <div className="flex items-center">
+          <Link 
+            to="/"
+            className="py-1 -my-1 px-2 -mx-2 tabbable rounded-lg flex items-center cursor-pointer text-secondary-grey hover:text-white transition-colors duration-200 font-medium"
+          >
+            <span className="mr-2 rtl:-scale-x-100">
+              <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+            </span>
+            <span className="hidden md:block">Back to home</span>
+          </Link>
+          
+          <span className="text mx-3 text-secondary-grey">/</span>
+          
+          <p className="cursor-default transform transition-transform duration-200 hover:scale-105 text-white">
+            {title}
+          </p>
+        </div>
       </div>
-      
+
       <ControlBar 
         playerState={playerState} 
         controls={controls}

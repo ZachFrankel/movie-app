@@ -38,6 +38,8 @@ body {
   --color-ash-500: #9c93b5;
   --color-ash-600: #817998;
 
+  --color-secondary-grey: #6B6B6B;
+
   --font-open-sans: "Open Sans";
 
   --animate-loading-pin: loading-pin 1.8s ease-in-out infinite;
