@@ -1,11 +1,23 @@
 import { useParams } from "react-router-dom";
+import { VideoPlayer } from "../components/player/Player";
+import { VideoSource } from "../components/player/types";
 
 export function WatchMovie() {
   const { id } = useParams();
 
+  const sources: VideoSource[] = [
+    {
+      src: `https://files.vidstack.io/sprite-fight/hls/stream.m3u8`,
+      type: 'hls'
+    }
+  ];
+
   return (
     <>
-      <p>{id}</p>
+      <VideoPlayer 
+        sources={sources}
+        title={id}
+      />
     </>
   );
 }
