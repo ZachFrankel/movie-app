@@ -12,6 +12,15 @@ async function getTitle(id: string, type: string) {
   return data.title || data.name;
 }
 
+async function getEpisodeTitle(id: string, season: string, episode: string) {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/tv/${id}/season/${season}/episode/${episode}?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US`
+  );
+  
+  const data = await response.json();
+  return data.name;
+}
+
 export function WatchMovie() {
   const { id } = useParams();
   const [title, setTitle] = useState('');
@@ -48,17 +57,24 @@ export function WatchTV() {
   const { id, season, episode } = useParams();
 
   const [title, setTitle] = useState('');
+  const [episodeTitle, setEpisodeTitle] = useState('');
 
   useEffect(() => {
-    if (!id) return;
+    if (!id || !season || !episode) return;
     
     const fetchTitle = async () => {
       const title = await getTitle(id, 'tv');
       setTitle(title);
     };
 
+    const fetchEpisodeDetails = async () => {
+      const episodeTitle = await getEpisodeTitle(id, season, episode);
+      setEpisodeTitle(episodeTitle);
+    };
+
     fetchTitle();
-  }, [id]);
+    fetchEpisodeDetails();
+  }, [id, season, episode]);
 
   const sources: VideoSource[] = [
     {
@@ -72,6 +88,11 @@ export function WatchTV() {
       <VideoPlayer 
         sources={sources}
         title={title}
+        episodeInfo={season && episode ? {
+          season: Number(season),
+          episode: Number(episode),
+          episodeTitle
+        } : undefined}
       />
     </>
   );

@@ -29,6 +29,7 @@ export interface PlayerProps {
   sources: VideoSource[];
   autoPlay?: boolean;
   title?: string;
+  episodeInfo?: EpisodeInfo;
 }
 
 export const isHLSSource = (source: VideoSource): boolean => {
@@ -36,3 +37,9 @@ export const isHLSSource = (source: VideoSource): boolean => {
          source.type === 'application/vnd.apple.mpegurl' || 
          source.src.endsWith('.m3u8');
 };
+
+export interface EpisodeInfo {
+  season: number;
+  episode: number;
+  episodeTitle: string;
+}
