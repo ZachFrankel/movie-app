@@ -28,8 +28,7 @@ interface EpisodeSelectorProps {
 
 export function EpisodeSelector({ 
   showId, 
-  currentSeason, 
-  currentEpisode, 
+  currentSeason,
   onClose 
 }: EpisodeSelectorProps) {
   const [seasons, setSeasons] = useState<Season[]>([]);
@@ -105,17 +104,17 @@ export function EpisodeSelector({
 
   if (loading) {
     return (
-      <div className="bg-denim-300 text-white rounded-lg overflow-hidden shadow-lg w-[340px] h-[430px] flex items-center justify-center">
+      <div className="bg-black text-[#8EA3B0] rounded-lg overflow-hidden shadow-lg w-[340px] h-[430px] flex items-center justify-center">
         <Loading />
       </div>
     );
   }
 
   return (
-    <div className="bg-denim-300 text-white rounded-lg overflow-hidden shadow-lg w-[340px] h-[430px] flex flex-col">
+    <div className="bg-black text-[#8EA3B0] rounded-lg overflow-hidden shadow-lg w-[340px] h-[430px] flex flex-col border border-[rgba(255,255,255,0.1)]">
       {/* Season Header */}
       <div className="flex-none">
-        <h3 className="font-bold text-white pb-3 pt-5 border-b border-denim-400 flex justify-between items-center px-4">
+        <h3 className="font-bold text-[#8EA3B0] pb-3 pt-5 border-b border-[rgba(255,255,255,0.1)] flex justify-between items-center px-4">
           <div className="flex items-center space-x-3">
             {showSeasonsList ? (
               <div className="truncate max-w-[200px]">
@@ -126,7 +125,7 @@ export function EpisodeSelector({
                 <button 
                   type="button"
                   onClick={toggleSeasonsList}
-                  className="-ml-2 p-2 rounded tabbable hover:bg-video-context-light hover:bg-opacity-10"
+                  className="-ml-2 p-2 rounded tabbable hover:bg-video-context-hoverColor hover:bg-opacity-50"
                   aria-label="View seasons"
                 >
                   <span className="text-xl rtl:-scale-x-100">
@@ -154,25 +153,25 @@ export function EpisodeSelector({
               <button
                 key={season.id}
                 type="button"
-                className={`flex py-2 px-3 rounded-lg w-full -ml-3 hover:bg-denim-400 hover:bg-opacity-50 cursor-pointer ${
-                  selectedSeason?.season_number === season.season_number ? 'bg-denim-400 bg-opacity-50' : ''
-                }`}
+                className="flex py-2 px-3 rounded-lg w-full -ml-3 hover:bg-video-context-hoverColor hover:bg-opacity-50 cursor-pointer tabbable"
                 style={{ width: 'calc(100% + 1.5rem)' }}
                 onClick={() => handleSeasonChange(season)}
               >
                 <div className="flex items-center flex-1">
                   <div className="flex-1 text-left">
-                    <span className="font-medium text-left text-white">
+                    <span className="font-medium text-left text-[#8EA3B0]">
                       {season.name}
                     </span>
                   </div>
-                  {selectedSeason?.season_number === season.season_number && (
-                    <div className="flex">
-                      <svg className="h-[18px] w-[18px] text-white" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
-                      </svg>
-                    </div>
-                  )}
+                  <div className="flex">
+                    <span className="text-white flex items-center font-medium">
+                      <span className="text-xl ml-1 -mr-1.5 rtl:-scale-x-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-right">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </button>
             ))}
@@ -183,19 +182,15 @@ export function EpisodeSelector({
               <button
                 key={episode.id}
                 type="button"
-                className={`flex py-2 px-3 rounded-lg w-full -ml-3 hover:bg-denim-400 hover:bg-opacity-50 cursor-pointer ${
-                  currentEpisode === episode.episode_number ? 'bg-denim-400 bg-opacity-50' : ''
-                }`}
+                className="flex py-2 px-3 rounded-lg w-full -ml-3 hover:bg-video-context-hoverColor hover:bg-opacity-50 cursor-pointer tabbable"
                 style={{ width: 'calc(100% + 1.5rem)' }}
                 onClick={() => handleEpisodeSelect(selectedSeason.season_number, episode.episode_number)}
               >
                 <div className="flex items-center flex-1">
                   <div className="flex-1 text-left">
-                    <span className="font-medium text-left text-white">
-                      <div className="text-left flex items-center space-x-3 text-white">
-                        <span className={`p-0.5 px-2 rounded inline bg-bink-300 ${
-                          currentEpisode === episode.episode_number ? 'text-white bg-opacity-100' : 'bg-opacity-50'
-                        }`}>
+                    <span className="font-medium text-left text-[#8EA3B0]">
+                      <div className="text-left flex items-center space-x-3 text-[#8EA3B0]">
+                        <span className="p-0.5 px-2 rounded inline bg-video-context-hoverColor bg-opacity-50">
                           E{episode.episode_number}
                         </span>
                         <span className="line-clamp-1 break-all">{episode.name}</span>
