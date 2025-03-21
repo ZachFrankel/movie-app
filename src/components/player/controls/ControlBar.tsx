@@ -8,6 +8,7 @@ import { SeekButtons } from './Seek';
 import { SettingsButton } from './Settings';
 import { EpisodesButton } from './Episodes';
 import { EpisodeSelector } from './EpisodeSelector';
+import { SettingsMenu } from './SettingsMenu';
 import { PlayerState, PlayerControls, EpisodeInfo } from '../types';
 
 interface ControlBarProps {
@@ -17,35 +18,41 @@ interface ControlBarProps {
   episodeInfo?: EpisodeInfo;
 }
 
+// Helper function to format time in MM:SS
+function formatTime(seconds: number): string {
+  if (isNaN(seconds)) return '00:00';
+  
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+  
+  return `${formattedMinutes}:${formattedSeconds}`;
+}
+
 export function ControlBar({ playerState, controls, showControls, episodeInfo }: ControlBarProps) {
   const [isTimeHovering, setIsTimeHovering] = useState(false);
   const [showEpisodeSelector, setShowEpisodeSelector] = useState(false);
+  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
   const { id } = useParams<{ id: string }>();
-  
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-  };
 
-  const handleSeekForward = () => {
-    controls.seek(Math.min(playerState.progress + 10, playerState.duration));
-  };
-
-  const handleSeekBackward = () => {
-    controls.seek(Math.max(playerState.progress - 10, 0));
-  };
-
-  const handleSettingsClick = () => {
-    // Handle settings dialog
-  };
-  
   const handleEpisodesClick = () => {
     setShowEpisodeSelector(!showEpisodeSelector);
+    setShowSettingsMenu(false);
   };
-
+  
   const closeEpisodeSelector = () => {
     setShowEpisodeSelector(false);
+  };
+  
+  const handleSettingsClick = () => {
+    setShowSettingsMenu(!showSettingsMenu);
+    setShowEpisodeSelector(false);
+  };
+  
+  const closeSettingsMenu = () => {
+    setShowSettingsMenu(false);
   };
 
   return (
@@ -53,23 +60,21 @@ export function ControlBar({ playerState, controls, showControls, episodeInfo }:
       <div className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 transition-opacity duration-300 ${
         showControls ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}>
-        <div className="mb-2">
-          <ProgressBar 
-            currentTime={playerState.progress} 
-            duration={playerState.duration} 
-            onSeek={controls.seek}
-          />
-        </div>
+        <ProgressBar 
+          currentTime={playerState.progress} 
+          duration={playerState.duration} 
+          onSeek={controls.seek}
+        />
         
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+        <div className="flex justify-between items-center mt-2">
+          <div className="flex items-center space-x-2">
             <PlayPauseButton 
               isPlaying={playerState.isPlaying} 
               onToggle={controls.togglePlay} 
             />
-            <SeekButtons
-              onSeekForward={handleSeekForward}
-              onSeekBackward={handleSeekBackward}
+            <SeekButtons 
+              onSeekBackward={() => controls.seek(playerState.progress - 10)}
+              onSeekForward={() => controls.seek(playerState.progress + 10)}
             />
             <VolumeControl 
               volume={playerState.volume} 
@@ -111,9 +116,18 @@ export function ControlBar({ playerState, controls, showControls, episodeInfo }:
                 )}
               </div>
             )}
-            <SettingsButton
-              onClick={handleSettingsClick}
-            />
+            <div className="relative">
+              <SettingsButton
+                onClick={handleSettingsClick}
+              />
+              {showSettingsMenu && (
+                <div className="absolute bottom-18 right-[-54px] z-50">
+                  <SettingsMenu
+                    onClose={closeSettingsMenu}
+                  />
+                </div>
+              )}
+            </div>
             <FullscreenButton 
               isFullscreen={playerState.isFullscreen} 
               onToggle={controls.toggleFullscreen} 
@@ -122,11 +136,14 @@ export function ControlBar({ playerState, controls, showControls, episodeInfo }:
         </div>
       </div>
       
-      {/* Add a backdrop to close the episode selector when clicking outside */}
-      {showEpisodeSelector && (
+      {/* Add a backdrop to close menus when clicking outside */}
+      {(showEpisodeSelector || showSettingsMenu) && (
         <div 
           className="fixed inset-0 z-40"
-          onClick={closeEpisodeSelector}
+          onClick={() => {
+            closeEpisodeSelector();
+            closeSettingsMenu();
+          }}
         ></div>
       )}
     </>
