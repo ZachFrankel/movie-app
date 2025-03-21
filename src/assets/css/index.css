@@ -40,6 +40,12 @@ body {
 
   --color-secondary-grey: #6B6B6B;
 
+  --color-video-buttonBackground: rgba(255, 255, 255, 0.2);
+  --color-video-context-border: rgba(255, 255, 255, 0.1);
+  --color-video-context-type-main: #ffffff;
+  --color-video-context-light: #ffffff;
+  --color-video-context-hoverColor: rgba(255, 255, 255, 0.2);
+
   --font-open-sans: "Open Sans";
 
   --animate-loading-pin: loading-pin 1.8s ease-in-out infinite;
