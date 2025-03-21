@@ -36,6 +36,7 @@ export function EpisodeSelector({
   const [showSeasonsList, setShowSeasonsList] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showName, setShowName] = useState('');
+  const [, setSlideDirection] = useState<'forward' | 'backward'>('forward');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -94,12 +95,14 @@ export function EpisodeSelector({
   };
 
   const handleSeasonChange = (season: Season) => {
+    setSlideDirection('forward');
     setSelectedSeason(season);
     setShowSeasonsList(false);
   };
 
   const toggleSeasonsList = () => {
-    setShowSeasonsList(!showSeasonsList);
+    setSlideDirection('backward');
+    setShowSeasonsList(true);
   };
 
   if (loading) {
@@ -145,63 +148,86 @@ export function EpisodeSelector({
         </h3>
       </div>
 
-      {/* Season List or Episode List - with fixed height */}
-      <div className="flex-1 overflow-y-auto scrollbar scrollbar-thumb-[#252525] scrollbar-track-transparent">
-        {showSeasonsList ? (
-          <div className="pt-4 space-y-1 pb-6 px-4">
-            {seasons.map((season) => (
-              <button
-                key={season.id}
-                type="button"
-                className="flex py-2 px-3 rounded-lg w-full -ml-3 hover:bg-video-context-hoverColor hover:bg-opacity-50 cursor-pointer tabbable"
-                style={{ width: 'calc(100% + 1.5rem)' }}
-                onClick={() => handleSeasonChange(season)}
-              >
-                <div className="flex items-center flex-1">
-                  <div className="flex-1 text-left">
-                    <span className="font-medium text-left text-[#8EA3B0]">
-                      {season.name}
-                    </span>
-                  </div>
-                  <div className="flex">
-                    <span className="text-white flex items-center font-medium">
-                      <span className="text-xl ml-1 -mr-1.5 rtl:-scale-x-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-right">
-                          <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
+      {/* Season List or Episode List - with fixed height and animations */}
+      <div className="flex-1 overflow-hidden">
+        <div 
+          className="h-full relative"
+          style={{ 
+            perspective: '1000px'
+          }}
+        >
+          {/* Seasons List */}
+          <div 
+            className={`absolute inset-0 transition-all duration-300 ease-in-out overflow-y-auto scrollbar scrollbar-thumb-[#252525] scrollbar-track-transparent transform ${
+              showSeasonsList 
+                ? 'translate-x-0 opacity-100 z-10' 
+                : 'translate-x-[-100%] opacity-0 z-0'
+            }`}
+          >
+            <div className="pt-4 space-y-1 pb-6 px-4">
+              {seasons.map((season) => (
+                <button
+                  key={season.id}
+                  type="button"
+                  className="flex py-2 px-3 rounded-lg w-full -ml-3 hover:bg-video-context-hoverColor hover:bg-opacity-50 cursor-pointer tabbable"
+                  style={{ width: 'calc(100% + 1.5rem)' }}
+                  onClick={() => handleSeasonChange(season)}
+                >
+                  <div className="flex items-center flex-1">
+                    <div className="flex-1 text-left">
+                      <span className="font-medium text-left text-[#8EA3B0]">
+                        {season.name}
                       </span>
-                    </span>
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
-        ) : (
-          <div className="pt-4 space-y-1 pb-6 px-4">
-            {selectedSeason?.episodes.map((episode) => (
-              <button
-                key={episode.id}
-                type="button"
-                className="flex py-2 px-3 rounded-lg w-full -ml-3 hover:bg-video-context-hoverColor hover:bg-opacity-50 cursor-pointer tabbable"
-                style={{ width: 'calc(100% + 1.5rem)' }}
-                onClick={() => handleEpisodeSelect(selectedSeason.season_number, episode.episode_number)}
-              >
-                <div className="flex items-center flex-1">
-                  <div className="flex-1 text-left">
-                    <span className="font-medium text-left text-[#8EA3B0]">
-                      <div className="text-left flex items-center space-x-3 text-[#8EA3B0]">
-                        <span className="p-0.5 px-2 rounded inline bg-video-context-hoverColor bg-opacity-50">
-                          E{episode.episode_number}
+                    </div>
+                    <div className="flex">
+                      <span className="text-white flex items-center font-medium">
+                        <span className="text-xl ml-1 -mr-1.5 rtl:-scale-x-100">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                          </svg>
                         </span>
-                        <span className="line-clamp-1 break-all">{episode.name}</span>
-                      </div>
-                    </span>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </button>
-            ))}
+                </button>
+              ))}
+            </div>
           </div>
-        )}
+
+          {/* Episodes List */}
+          <div 
+            className={`absolute inset-0 transition-all duration-300 ease-in-out overflow-y-auto scrollbar scrollbar-thumb-[#252525] scrollbar-track-transparent transform ${
+              !showSeasonsList 
+                ? 'translate-x-0 opacity-100 z-10' 
+                : 'translate-x-[100%] opacity-0 z-0'
+            }`}
+          >
+            <div className="pt-4 space-y-1 pb-6 px-4">
+              {selectedSeason?.episodes.map((episode) => (
+                <button
+                  key={episode.id}
+                  type="button"
+                  className="flex py-2 px-3 rounded-lg w-full -ml-3 hover:bg-video-context-hoverColor hover:bg-opacity-50 cursor-pointer tabbable"
+                  style={{ width: 'calc(100% + 1.5rem)' }}
+                  onClick={() => handleEpisodeSelect(selectedSeason.season_number, episode.episode_number)}
+                >
+                  <div className="flex items-center flex-1">
+                    <div className="flex-1 text-left">
+                      <span className="font-medium text-left text-[#8EA3B0]">
+                        <div className="text-left flex items-center space-x-3 text-[#8EA3B0]">
+                          <span className="p-0.5 px-2 rounded inline bg-video-context-hoverColor bg-opacity-50">
+                            E{episode.episode_number}
+                          </span>
+                          <span className="line-clamp-1 break-all">{episode.name}</span>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
