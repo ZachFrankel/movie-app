@@ -146,7 +146,7 @@ export function EpisodeSelector({
       </div>
 
       {/* Season List or Episode List - with fixed height */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto scrollbar scrollbar-thumb-[#252525] scrollbar-track-transparent">
         {showSeasonsList ? (
           <div className="pt-4 space-y-1 pb-6 px-4">
             {seasons.map((season) => (
