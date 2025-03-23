@@ -55,7 +55,7 @@ export async function fetchProviders(): Promise<Provider[]> {
     }
 
     const data: ProvidersResponse = await response.json();
-    return data.providers;
+    return data.providers.filter(provider => provider.status === "enabled");
   } catch (error) {
     console.error(error);
     return [];
