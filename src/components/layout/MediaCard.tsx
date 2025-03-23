@@ -34,7 +34,7 @@ export function MediaCard({ id, posterPath, title, mediaType, year }: MediaCardP
           {title}
         </h1>
         <p className="text-type-secondary text-xs text-left">
-          <span className="capitalize">{mediaType}</span>
+          <span className="capitalize">{mediaType === "tv" ? "TV" : mediaType}</span>
           {year && <span> • {year}</span>}
         </p>
       </article>
