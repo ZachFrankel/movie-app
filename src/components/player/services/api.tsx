@@ -91,3 +91,21 @@ export async function fetchMedia(
     return {};
   }
 }
+
+export function getBestQuality(stream: StreamSource): string | null {
+  if (stream.type === "hls" && stream.playlist) {
+    return stream.playlist;
+  }
+  
+  if (stream.type === "file" && stream.qualities) {
+    const qualityPreferences = ["4k", "1440", "1080", "720", "480", "360"];
+    
+    for (const quality of qualityPreferences) {
+      if (stream.qualities[quality]) {
+        return stream.qualities[quality].url;
+      }
+    }
+  }
+  
+  return null;
+}
