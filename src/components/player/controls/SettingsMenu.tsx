@@ -23,6 +23,7 @@ export function SettingsMenu({ onClose }: SettingsMenuProps) {
   const [, setSlideDirection] = useState<"forward" | "backward">("forward");
   const [providers, setProviders] = useState<Provider[]>([]);
   const [selectedSource, setSelectedSource] = useState<string | null>(null);
+  const [selectedSourceDisplay, setSelectedSourceDisplay] = useState<string | null>(null);
 
   useEffect(() => {
     if (activeMenu === "source") {
@@ -46,8 +47,9 @@ export function SettingsMenu({ onClose }: SettingsMenuProps) {
     setActiveMenu("main");
   };
 
-  const handleSourceSelect = (sourceId: string) => {
+  const handleSourceSelect = (sourceId: string, sourceDisplay: string) => {
     setSelectedSource(sourceId);
+    setSelectedSourceDisplay(sourceDisplay);
   };
 
   if (loading) {
@@ -170,7 +172,7 @@ export function SettingsMenu({ onClose }: SettingsMenuProps) {
                   </div>
                   <div className="flex">
                     <span className="text-white flex items-center font-medium">
-                      <span className="text-white mr-1">Server 1</span>
+                      <span className="text-white mr-1">{selectedSourceDisplay}</span>
                       <span className="text-xl ml-1 -mr-1.5 rtl:-scale-x-100">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -227,7 +229,7 @@ export function SettingsMenu({ onClose }: SettingsMenuProps) {
                         : "cursor-default"
                     } `}
                     style={{ width: "calc(100% + 1.5rem)" }}
-                    onClick={() => handleSourceSelect(provider.id)}
+                    onClick={() => handleSourceSelect(provider.id, provider.name)}
                     disabled={provider.status === "disabled"}
                   >
                     <div className="flex items-center flex-1">
