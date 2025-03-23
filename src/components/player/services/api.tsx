@@ -44,11 +44,7 @@ const BASE_URL = "https://api.sussybaka.tech";
 
 export async function fetchProviders(): Promise<Provider[]> {
   try {
-    const response = await fetch(`${BASE_URL}/providers/`, {
-      headers: {
-        "x-api-key": import.meta.env.VITE_PROVIDER_API_KEY,
-      },
-    });
+    const response = await fetch(`${BASE_URL}/providers/`);
 
     if (!response.ok) {
       throw new Error("Failed to fetch providers");
@@ -78,11 +74,7 @@ export async function fetchMedia(
       url = `${BASE_URL}/providers/${providerId}/tv/${tmdbId}/${season}/${episode}`;
     }
 
-    const response = await fetch(url, {
-      headers: {
-        "x-api-key": import.meta.env.VITE_PROVIDER_API_KEY,
-      },
-    });
+    const response = await fetch(url);
 
     const data: MediaResponse = await response.json();
     return data;
